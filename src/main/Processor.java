@@ -31,7 +31,7 @@ public class Processor implements Runnable {
 
 			try {
 
-				url = new URL("https://eitn41.eit.lth.se:3119/ha4/addgrade.php?name=Kalle&grade=5&signature=6823ea50b" + c);
+				url = new URL("https://eitn41.eit.lth.se:3119/ha4/addgrade.php?name=Kalle&grade=5&signature=6823ea50b133c58cba" + c);
 
 				yc = url.openConnection();
 
