@@ -4,26 +4,21 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 
 public class TimingAttack {
-	private StringBuilder b;
-	private ArrayList<BigInteger> list;
+
 	private BigInteger largest;
-	char correct; 
+	char correct;
 
 	public TimingAttack() {
 		largest = BigInteger.ZERO;
-		list = new ArrayList<BigInteger>();
-
-	}
-
-	public synchronized void addTooList(BigInteger i) {
-		list.add(i);
 
 	}
 
 	public synchronized void clearList() {
-		list.clear();
+
+		largest = BigInteger.ZERO;
+
 	}
-	
+
 	public synchronized void setCorrect(char c) {
 		correct = c;
 	}
@@ -37,9 +32,8 @@ public class TimingAttack {
 
 	}
 
-	public void getMax() {
-		System.out.println(correct);
+	public synchronized String getMax() {
+		return Character.toString(correct);
 	}
-	
 
 }

