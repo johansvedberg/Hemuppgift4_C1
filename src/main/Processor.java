@@ -40,7 +40,7 @@ public class Processor implements Runnable {
 			e1.printStackTrace();
 		}
 
-		for (int j = 0; j < 10; j++) {
+		for (int j = 0; j < 50; j++) {
 
 			try {
 
@@ -62,7 +62,7 @@ public class Processor implements Runnable {
 		}
 
 		long endTime = System.nanoTime();
-		duration = BigInteger.valueOf((endTime - startTime) / 10);
+		duration = BigInteger.valueOf((endTime - startTime) / 50);
 		// System.out.println(duration);
 
 		if (attack.isMax(duration)) {
